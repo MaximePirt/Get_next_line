@@ -1,0 +1,34 @@
+Get_next_line :
+
+char *get_next_line(int fd)
+{}
+read/malloc/free 
+static
+-D buffer_size = n (9999)
+
+GNL --> parsing [text : grtsdfg/vvasrfgvbfd/vbadfgvv] -> copy le res -> end
+
+Copier ligne dans la  func parsing + renvoyer en res 
+Modifier le tableau parsing + renvoyer res 
+
+buffer ? Tampon :
+
+                        while (!= \n || \0)
+J aime |                buffer [J aime\n]
+Les |                   buffer [les\n]                  S = buffer -> return(S)
+Patates douces          buffer[patates douces\0]
+
+read ?
+read(char *fd, 		void *buff,      int nb) --> retourne la taille lut 
+        text   	buff a remplir 		nb a lire
+
+/!\ bytestoread < buffer --> buffer overflow
+
+ajouter '\0' -> buff[size] = 0
+write(1, buff, size)
+
+static i = nb lu 
+while (!= \n || \0)
+	....
+buff[size] = \0
+return (i)
