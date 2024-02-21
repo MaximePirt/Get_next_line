@@ -6,43 +6,69 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:43 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/20 13:15:37 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/21 04:18:45 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-int	ft_putstr(char *str)
+int	ft_putstr(char *s)
 {
-	int i;
+	size_t	i;
 
+	if (!s)
+		return(-1) ;
 	i = 0;
-	while (str)
+	while (s[i])
 	{
-		write(1, str, 1);
+		write(1, &s[i], 1);
 		i++;
-		str++;
 	}
-	return(i);
+	return (i);	
 }
 
-char *ft_parsing (char *buff)
+ char	*ft_parsing (char *buff)
 {
 	char *res;
+	static char *tamp;
 	int i;
-	
+	int a;
+
 	i = 0;
-
-	res =  malloc((BUFFER_SIZE + 1) * sizeof(char));;
-
-	while (buff[i] != '\0' && buff[i] != '\n')
+	a = 0;
+	if(!tamp)
+		tamp = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	res = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if(tamp[i])
 	{
-		//write(1, &buff[i], 1);
-		res[i] = buff[i];
-		i++;
+		while (tamp[a] && (res[a] != '\n'))
+		{
+			res[a] = tamp[a];
+			a++;
+		}
 	}
-
-	//write(1, "D", 1);
+	if(res[a] != '\n')
+	{
+		while (buff[i] != '\0' && buff[i] != '\n')
+			{
+				res[a] = buff[i];
+				i++;
+				a++;
+			}
+		if (buff[i] == '\n')
+		{
+			res[a] = '\n';
+			i++;
+			a = 0;
+			while (buff[i] != '\0')
+			{
+				tamp[a] = buff[i];
+				i++;
+				a++;
+			}
+		}
+	}
 	return(res);
 }
 
@@ -50,28 +76,28 @@ char	*get_next_line(int fd)
 {
     char *			res;
     static long		i;
-    char *			buff;
+    static char *	buff;
 
     i = 0;
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	//while (buff[i] != '\0' || buff[i] != '\n') 
-	//{
     i += read(fd, buff, BUFFER_SIZE);
-	//}
 
 	res = ft_parsing(buff);
 	ft_putstr(res);
-	//write(1, "o", 1);
     free(buff);
     return(res);
 }
+
 #include <fcntl.h>
 int main ()
 {
 	int fd = open("Notes.txt", O_RDONLY);
+
 	if (fd < 0)
 		return (-1);
 	get_next_line(fd);
+	get_next_line(fd);
+	// get_next_line(fd);
 	close(fd);
 	return(0);
 }
