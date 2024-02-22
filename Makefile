@@ -6,7 +6,7 @@
 #    By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/12 13:24:16 by mpierrot          #+#    #+#              #
-#    Updated: 2024/02/18 22:25:32 by mpierrot         ###   ########.fr        #
+#    Updated: 2024/02/22 01:06:00 by mpierrot         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRCDIR = srcs
 OBJDIR = objs
 
 SRCS = 	srcs/get_next_line.c \
-		srcs/get_next_line_utils.c
+		srcs/get_next_line_utils.c \
+		srcs/test.c
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 NAME = get_next_line
 CC = cc

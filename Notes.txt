@@ -33,3 +33,13 @@ while (!= \n || \0)
 	....
 buff[size] = \0
 return (i)
+
+
+------------
+Faire i - a a la fin pour la copie du Tampon
+du style :
+i = i - a;
+
+comme ca je pourrais virer z 
+(ca parait logique mais j y ai penser que en prenant
+ mon cafe et pas avant parce que je suis un peu con)
