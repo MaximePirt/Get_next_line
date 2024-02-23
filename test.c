@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 00:42:31 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/22 02:40:17 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/23 06:35:41 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char    *ft_setamp (int a, char *tamp)
     return(tamp);
 }
 
-char	*ft_parsing (char *buff)
+char	*ft_parsing(char *buff)
 {
 	char *res;
 	static char *tamp;

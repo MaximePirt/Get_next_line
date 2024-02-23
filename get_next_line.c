@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:43 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/22 02:44:26 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/23 06:23:58 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_putstr(char *s)
 	return (i);	
 }
 
-//  char	*ft_parsing (char *buff)
+//  char	*ft_parsing(char *buff)
 // {
 // 	char *res;
 // 	static char *tamp;
