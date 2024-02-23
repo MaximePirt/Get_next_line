@@ -6,12 +6,35 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:51:24 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/23 07:59:18 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/24 00:50:58 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
+
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*tmp;
+	size_t	mallocsize;
+	int i;
+
+	if (count <= 0 || size <= 0)
+		return (malloc(0));
+	if (65535 / count < size)
+		return (NULL);
+	mallocsize = count * size;
+	tmp = malloc(mallocsize);
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (i < mallocsize)
+	{
+		tmp[i] = '\0';
+		i++;
+	}
+	return (tmp);
+}
 
 int ft_strlen(char *tamp)
 {
@@ -41,22 +64,22 @@ char *ft_cleantamp(char *tamp, int i)
 	int a;
 	int j;
 
-	a = ft_strlen(tamp)+2;
+	a = ft_strlen(tamp);
 	j = 0;
-	while (tamp[j] && j < i-2)
+	while (tamp[j])
 	{
-		if (tamp[j+(a-i)])
-			tamp[j] = tamp[j+(a-i)];
-		else if (tamp[i+1])
-			tamp[j] = tamp[j+1];
+		if (i > a-1)
+			tamp[j] = '\0';
+		else if (tamp[i])
+			tamp[j] = tamp[i];
 		j++;
+		i++;
 	}
 	while (tamp[j])
 	{
 		tamp[j] = '\0';
 		j++;
 	}
-	// printf("Voicitamp\n%s\n", tamp);
 	return(tamp);
 }
 
@@ -114,6 +137,7 @@ char *lastfill(char *buff, char *tamp)
 		i++;
 		a++;
 	}
+	tamp[a] = '\0';
 	return(tamp);
 
 }
@@ -121,47 +145,51 @@ char *lastfill(char *buff, char *tamp)
 char *get_next_line(int fd)
 {
     char *buff;
+	char *res;
     static char *tamp;
-    char *res;
     int i;
-	int z;
 
 	i = 0;
-	// printf("Tampon \n%s\n", tamp);
 	if (!tamp)
-		tamp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	res = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	buff = malloc(sizeof(char) * (BUFFER_SIZE +1));
+		tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	buff = ft_calloc(sizeof(char), (BUFFER_SIZE +1));
 	firstfill(tamp, res);
-	// printf("Tampon apres changement  \n%s\n", tamp);
-	// printf("res maintenant \n%s\n", res);
-	z = ft_check(res);
-	if (z == 0)
+	if (!ft_check(res))
 		i+=read(fd, buff, BUFFER_SIZE);
 	secondfill(buff, res);
 	lastfill(buff, tamp);
-	// printf("Tampon final \n%s\n", tamp);
-// printf("Resultat :\n%s\n", res);
-printf("%s", res);
-	// ft_putstr(res);
+	free(buff);
+	if (!ft_strlen(res))
+	{
+		free(tamp);
+		tamp = NULL;
+		free(res);
+		return(NULL);
+	}
     return(res);
 }
 
 
 #include <fcntl.h>
+#include <stdio.h>
+
+
 int main ()
 {
-	int fd = open("Notes.txt", O_RDONLY);
+	int fd = open("Notes2.txt", O_RDONLY);
+	int	i = 0;
+	char *line;
 
 	if (fd < 0)
 		return (-1);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
+	while (i < 15)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		free(line);		
+		i++;
+	}
 	close(fd);
 	return(0);
 }
