@@ -6,17 +6,41 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:43 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/24 00:52:01 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/24 01:03:03 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+int	ft_strlen(char *tamp)
+{
+	int	i;
+
+	i = 0;
+	while (tamp[i])
+		i++;
+	return (i);
+}
+
+int	ft_check(char *res)
+{
+	int	i;
+
+	i = 0;
+	while (res[i])
+	{
+		if (res[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	*ft_calloc(size_t count, size_t size)
 {
 	char	*tmp;
 	size_t	mallocsize;
-	int i;
+	int		i;
 
 	if (count <= 0 || size <= 0)
 		return (malloc(0));
@@ -35,118 +59,12 @@ void	*ft_calloc(size_t count, size_t size)
 	return (tmp);
 }
 
-int ft_strlen(char *tamp)
+char	*get_next_line(int fd)
 {
-	int i;
-
-	i = 0;
-	while (tamp[i])
-		i++;
-return (i);
-}
-
-int ft_check(char *res)
-{
-	int i;
-
-	i = 0;
-	while (res[i])
-	{
-		if (res[i] == '\n')
-			return(1);
-		i++;
-	}
-	return (0);
-}
-char *ft_cleantamp(char *tamp, int i)
-{
-	int a;
-	int j;
-
-	a = ft_strlen(tamp);
-	j = 0;
-	while (tamp[j])
-	{
-		if (i > a-1)
-			tamp[j] = '\0';
-		else if (tamp[i])
-			tamp[j] = tamp[i];
-		j++;
-		i++;
-	}
-	while (tamp[j])
-	{
-		tamp[j] = '\0';
-		j++;
-	}
-	return(tamp);
-}
-
-char *firstfill(char *tamp, char *res)
-{
-	int i;
-	i = 0;
-	while (tamp[i] != '\n' && tamp[i] != '\0')
-	{
-		res[i] = tamp[i];
-		i++;
-	}
-	res[i] = tamp[i];
-	i++;
-	ft_cleantamp(tamp, i);
-	return (res);
-}
-
-char *	secondfill(char * buff, char *res)
-{
-	int	i;
-	int	a;
-
-	i = 0;
-	a = 0;
-	while (res[i])
-		i++;
-	while (buff[a] != '\0' && buff[a] != '\n')
-	{
-		res[i] = buff[a];
-		i++;
-		a++;
-	}
-	res[i] = buff[a];
-	return (res);
-}
-
-char *lastfill(char *buff, char *tamp)
-{
-	int i;
-	int a;
-
-	i = 0;
-	a = 0;
-
-	while (buff[i] != '\n' && buff[i] != '\0')
-		i++;
-	if (buff[i] == '\n')
-		i++;
-	while (tamp[a])
-		a++;
-	while (buff[i])
-	{
-		tamp[a] = buff[i];
-		i++;
-		a++;
-	}
-	tamp[a] = '\0';
-	return(tamp);
-
-}
-
-char *get_next_line(int fd)
-{
-    char *buff;
-	char *res;
-    static char *tamp;
-    int i;
+	char		*buff;
+	char		*res;
+	static char	*tamp;
+	int			i;
 
 	i = 0;
 	if (!tamp)
@@ -155,7 +73,7 @@ char *get_next_line(int fd)
 	buff = ft_calloc(sizeof(char), (BUFFER_SIZE +1));
 	firstfill(tamp, res);
 	if (!ft_check(res))
-		i+=read(fd, buff, BUFFER_SIZE);
+		i += read(fd, buff, BUFFER_SIZE);
 	secondfill(buff, res);
 	lastfill(buff, tamp);
 	free(buff);
@@ -164,9 +82,9 @@ char *get_next_line(int fd)
 		free(tamp);
 		tamp = NULL;
 		free(res);
-		return(NULL);
+		return (NULL);
 	}
-    return(res);
+	return (res);
 }
 
 #include <fcntl.h>
