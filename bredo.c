@@ -6,15 +6,15 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/25 20:48:13 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:00:16 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int	ft_strlen(char *tamp)
 {
@@ -30,7 +30,7 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	char	*tmp;
 	size_t	mallocsize;
-	size_t		i;
+	size_t	i;
 
 	if (count <= 0 || size <= 0)
 		return (malloc(0));
@@ -52,11 +52,13 @@ void	*ft_calloc(size_t count, size_t size)
 int	ft_check(char *res, char c)
 {
 	int	i;
-    int a;
+	int	a;
 
-    a = ft_strlen(res);
+	a = ft_strlen(res);
 	i = 0;
-	while (i < a)
+	if (!a)
+		return (0);
+	while (i != a)
 	{
 		if (res[i] == c)
 			return (1);
@@ -117,56 +119,76 @@ char	*lastfill(char *buff, char *tamp)
 	return (tamp);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-    char        *buff;
-    char        *res;
-    static char *tamp;
+	char		*buff;
+	char		*res;
+	static char	*tamp;
 	int			i;
 
 	i = 0;
-    if (fd < 0)
-        return (NULL);
-    if (!tamp)
-        tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-    buff = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-    res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-	while(!ft_check(res, '\0') || !ft_check(res, '\n'))
+	if (fd < 0)
+		return (NULL);
+	if (!tamp)
+		tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	res = ft_strjoin(res, tamp);
+	while (!ft_check(res, '\0') && !ft_check(res, '\n'))
 	{
-		res = ft_strjoin(res, tamp);
-			if(!ft_check(res, '\n'))
-				i += read(fd, buff, BUFFER_SIZE);
+		buff = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+		if (!ft_check(buff, '\n'))
+			i = read(fd, buff, BUFFER_SIZE);
+		if (i <= 0)
+		{
+			// free(buff);
+			break ;
+		}
 		res = ft_strjoin(res, buff);
-		tamp = lastfill(tamp, buff);
+		// if ()
+		free(buff);
 	}
-    free(buff);
-    if (!ft_strlen(res))
-    {
-        free(tamp);
-        tamp = NULL;
-        free(res);
-        return (NULL);
-    }
-    return (res);
+	if ((ft_check(res, '\n') && !ft_check(res, '\0')) && buff)
+	{
+		lastfill(buff, tamp);
+		free(buff);
+	}
+	else if (ft_check(res, '\0'))
+	{
+		if (buff)
+			free(buff);
+		free(tamp);
+		tamp = NULL;
+	}
+	if (!ft_strlen(res))
+	{
+		if (tamp)
+		{
+			free(buff);
+			free(tamp);
+			tamp = NULL;
+		}
+		free(res);
+		return (NULL);
+	}
+	free(buff);
+	return (res);
 }
 
-
-
-int main (void)
+int	main(void)
 {
 	int fd = open("41_no_nl", O_RDONLY);
-	int	i = 0;
 	char *line;
 
 	if (fd < 0)
 		return (-1);
-	// while (i < 1)
-	// {
-		line = get_next_line(fd);
+	line = get_next_line(fd);
+	while (line)
+	{
 		printf("%s", line);
-		free(line);		
-		i++;
-	// }
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
 	close(fd);
-	return(0);
+	return (0);
 }
