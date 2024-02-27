@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/27 15:27:32 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/27 20:07:18 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int	ft_strlen(char *tamp)
+size_t	ft_strlen(char *tamp)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (tamp[i])
@@ -119,21 +119,13 @@ char	*lastfill(char *buff, char *tamp)
 	return (tamp);
 }
 
-char	*get_next_line(int fd)
+char	*ft_readline(int fd, char *res, char *tamp)
 {
-	char		*buff;
-	char		*res;
-	static char	*tamp;
-	int			i;
+	int		i;
+	char	*buff;
 
 	i = 0;
-	if (fd < 0)
-		return (NULL);
-	if (!tamp)
-		tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-	res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-	res = ft_strjoin(res, tamp);
-	while (!ft_check(res, '\0') && !ft_check(res, '\n'))
+	while (!ft_check(res, '\0'))
 	{
 		buff = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 		if (!ft_check(buff, '\n'))
@@ -141,6 +133,7 @@ char	*get_next_line(int fd)
 		if (i <= 0)
 		{
 			free(buff);
+			buff = NULL;
 			break ;
 		}
 		res = ft_strjoin(res, buff);
@@ -149,7 +142,12 @@ char	*get_next_line(int fd)
 	}
 	if ((ft_check(res, '\n') && !ft_check(res, '\0')) && buff)
 		lastfill(buff, tamp);
-	else if (ft_check(res, '\0'))
+	return (res);
+}
+
+int	ft_result_sort(char *res, char *tamp)
+{
+	if (ft_check(res, '\0'))
 	{
 		free(tamp);
 		tamp = NULL;
@@ -162,25 +160,70 @@ char	*get_next_line(int fd)
 			tamp = NULL;
 		}
 		free(res);
+		res = NULL;
+		return (-1);
+	}
+	return (0);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*res;
+	static char	*tamp;
+	int			i;
+
+	// char		*buff;
+	i = 0;
+	if (fd < 0)
+		return (NULL);
+	if (!tamp)
+		tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	res = ft_strjoin(res, tamp);
+	res = ft_readline(fd, res, tamp);
+	i = ft_result_sort(res, tamp);
+	if (i == -1)
+	{
+		if (tamp)
+		{
+			free(tamp);
+			tamp = NULL;
+		}
+		free(res);
+		res = NULL;
 		return (NULL);
 	}
+	// if (ft_check(res, '\0'))
+	// {
+	// 	free(tamp);
+	// 	tamp = NULL;
+	// }
+	// if (!ft_strlen(res))
+	// {
+	// 	if (tamp)
+	// 	{
+	// 		free(tamp);
+	// 		tamp = NULL;
+	// 	}
+	// 	free(res);
+	// 	res = NULL;
+	// 	return (NULL);
+	// }
 	return (res);
 }
 
 int	main(void)
 {
-	int fd = open("41_no_nl", O_RDONLY);
+	int fd = open("gnlTester/files/41_with_nl", O_RDONLY);
 	char *line;
 
 	if (fd < 0)
 		return (-1);
+	// line = get_next_line(-1);
+	// printf("%s", line);
+	// free(line);
 	line = get_next_line(fd);
-	while (line)
-	{
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fd);
-	}
+	printf("%s", line);
 	free(line);
 	close(fd);
 	return (0);

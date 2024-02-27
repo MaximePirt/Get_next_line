@@ -6,51 +6,96 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:40 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/24 01:04:19 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:33:06 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*firstfill(char *tamp, char *res)
+size_t	ft_strlen(char *tamp)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (tamp[i] != '\n' && tamp[i] != '\0')
-	{
-		res[i] = tamp[i];
+	while (tamp[i])
 		i++;
-	}
-	res[i] = tamp[i];
-	i++;
-	ft_cleantamp(tamp, i);
-	return (res);
+	return (i);
 }
 
-char	*secondfill(char *buff, char *res)
+int	ft_check(char *res, char c)
 {
 	int	i;
 	int	a;
 
+	a = ft_strlen(res);
 	i = 0;
-	a = 0;
-	while (res[i])
-		i++;
-	while (buff[a] != '\0' && buff[a] != '\n')
+	if (!a)
+		return (0);
+	while (i != a)
 	{
-		res[i] = buff[a];
+		if (res[i] == c)
+			return (1);
 		i++;
-		a++;
 	}
-	res[i] = buff[a];
-	return (res);
+	return (0);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*tmp;
+	size_t	mallocsize;
+	size_t	i;
+
+	if (count <= 0 || size <= 0)
+		return (malloc(0));
+	if (65535 / count < size)
+		return (NULL);
+	mallocsize = count * size;
+	tmp = malloc(mallocsize);
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (i < mallocsize)
+	{
+		tmp[i] = '\0';
+		i++;
+	}
+	return (tmp);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*dst;
+	size_t	i;
+	size_t	j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	dst = (char *)calloc((ft_strlen(s1) + ft_strlen(s2) + 1), 1);
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (i < ft_strlen(s1))
+	{
+		dst[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (j < ft_strlen(s2))
+	{
+		dst[i] = s2[j];
+		i++;
+		j++;
+	}
+	dst[i] = '\0';
+	free(s1);
+	return (dst);
 }
 
 char	*lastfill(char *buff, char *tamp)
 {
-	int	i;
-	int	a;
+	int i;
+	int a;
 
 	i = 0;
 	a = 0;
@@ -67,29 +112,5 @@ char	*lastfill(char *buff, char *tamp)
 		a++;
 	}
 	tamp[a] = '\0';
-	return (tamp);
-}
-
-char	*ft_cleantamp(char *tamp, int i)
-{
-	int	a;
-	int	j;
-
-	a = ft_strlen(tamp);
-	j = 0;
-	while (tamp[j])
-	{
-		if (i > a - 1)
-			tamp[j] = '\0';
-		else if (tamp[i])
-			tamp[j] = tamp[i];
-		j++;
-		i++;
-	}
-	while (tamp[j])
-	{
-		tamp[j] = '\0';
-		j++;
-	}
 	return (tamp);
 }
