@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/26 17:00:16 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:27:32 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,22 +140,17 @@ char	*get_next_line(int fd)
 			i = read(fd, buff, BUFFER_SIZE);
 		if (i <= 0)
 		{
-			// free(buff);
+			free(buff);
 			break ;
 		}
 		res = ft_strjoin(res, buff);
-		// if ()
 		free(buff);
+		buff = NULL;
 	}
 	if ((ft_check(res, '\n') && !ft_check(res, '\0')) && buff)
-	{
 		lastfill(buff, tamp);
-		free(buff);
-	}
 	else if (ft_check(res, '\0'))
 	{
-		if (buff)
-			free(buff);
 		free(tamp);
 		tamp = NULL;
 	}
@@ -163,14 +158,12 @@ char	*get_next_line(int fd)
 	{
 		if (tamp)
 		{
-			free(buff);
 			free(tamp);
 			tamp = NULL;
 		}
 		free(res);
 		return (NULL);
 	}
-	free(buff);
 	return (res);
 }
 
