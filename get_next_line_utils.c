@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:40 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/28 06:41:38 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/28 22:44:53 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,20 @@ char	*ft_strjoin(char *s1, char *s2)
 		i++;
 	}
 	i = 0;
-	while (s2[i])
+	while (s2[i] && s2[i] != '\n')
 	{
 		dst[i+s1_len] = s2[i];
 		i++;
 	}
-	dst[i+s1_len] = '\0';
+	dst[i+s1_len] = s2[i];
 	free(s1);
 	return (dst);
 }
 
 char	*lastfill(char *buff, char *tamp)
 {
-	int i;
-	int a;
+	int	i;
+	int	a;
 
 	i = 0;
 	a = 0;

@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/28 09:09:44 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/28 23:59:35 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ char	*lastfill(char *buff, char *tamp)
 	int	i;
 	int	a;
 
+	if (!tamp && !buff)
+		return (NULL);
+	else if (!tamp)
+		return (buff);
+	else if (!buff)
+		return (tamp);
 	i = 0;
 	a = 0;
 	while (buff[i] != '\n' && buff[i] != '\0')
@@ -118,19 +124,40 @@ char	*lastfill(char *buff, char *tamp)
 	tamp[a] = '\0';
 	return (tamp);
 }
+// char *ft_cleantamp(char *tamp, size_t i)
+// {
+// 	size_t a;
+// 	size_t j;
+
+// 	a = ft_strlen(tamp)+2;
+// 	j = 0;
+// 	while (tamp[j] && j < i-2)
+// 	{
+// 		if (tamp[j+(a-i)])
+// 			tamp[j] = tamp[j+(a-i)];
+// 		else if (tamp[i+1])
+// 			tamp[j] = tamp[j+1];
+// 		j++;
+// 	}
+// 	while (tamp[j])
+// 	{
+// 		tamp[j] = '\0';
+// 		j++;
+// 	}
+// 	// printf("Voicitamp\n%s\n", tamp);
+// 	return(tamp);
+// }
+
 char *ft_cleantamp(char *tamp, int i)
 {
-	int a;
-	int j;
+	size_t j;
+	size_t a;
 
-	a = ft_strlen(tamp)+2;
+	a = ft_strlen(tamp);
 	j = 0;
-	while (tamp[j] && j < i-2)
+	while (tamp[j] && j < (a-i))
 	{
-		if (tamp[j+(a-i)])
-			tamp[j] = tamp[j+(a-i)];
-		else if (tamp[i+1])
-			tamp[j] = tamp[j+1];
+		tamp[j] = tamp[j+i];
 		j++;
 	}
 	while (tamp[j])
@@ -138,13 +165,12 @@ char *ft_cleantamp(char *tamp, int i)
 		tamp[j] = '\0';
 		j++;
 	}
-	// printf("Voicitamp\n%s\n", tamp);
 	return(tamp);
 }
 
 void firstfill(char *tamp, char *res)
 {
-	int i;
+	size_t i;
 	i = 0;
 	while (tamp[i] != '\n' && tamp[i])
 	{
@@ -152,8 +178,8 @@ void firstfill(char *tamp, char *res)
 		i++;
 	}
 	res[i] = tamp[i];
-	i++;
-	ft_cleantamp(tamp, i);
+	// i++;
+	tamp = ft_cleantamp(tamp, i);
 	return ;
 }
 
@@ -168,28 +194,30 @@ char	*ft_readline(int fd, char *res, char *tamp)
 		buff = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 			i = read(fd, buff, BUFFER_SIZE);
 		if (i <= 0)
+		{
+			free(buff);
+			buff = NULL;
 			break ;
+		}
 		res = ft_strjoin(res, buff);
+		if (((ft_check(res, '\n') || ft_check(res, '\0'))) && buff)
+			lastfill(buff, tamp);
+		free(buff);
+		buff = NULL;
 	}
-	if ((ft_check(res, '\n') && !ft_check(res, '\0')) && buff)
-		lastfill(buff, tamp);
-	free(buff);
-	buff = NULL;
+
 	return (res);
 }
 
 int	ft_result_sort(char *res, char *tamp)
 {
+	if (!ft_strlen(res))
+		return (-1);
 	if (ft_check(res, '\0') || !ft_strlen(tamp))
 	{
 		if (tamp)
-		{
-		free(tamp);
-		tamp = NULL;
-		}
+		return(1);
 	}
-	if (!ft_strlen(res))
-		return (-1);
 	return (0);
 }
 
@@ -208,13 +236,12 @@ char	*get_next_line(int fd)
 	firstfill(tamp, res);
 	res = ft_readline(fd, res, tamp);
 	i = ft_result_sort(res, tamp);
-	if (i == -1)
+	while (i == -1 || i == 1)
 	{
-		if (tamp)
-		{
-			free(tamp);
-			tamp = NULL;
-		}
+		free(tamp);
+		tamp = NULL;
+		if (i == 1)
+			break;
 		free(res);
 		res = NULL;
 		return (NULL);
@@ -224,19 +251,35 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	int fd = open("gnlTester/files/41_no_nl", O_RDONLY);
+	int fd = open("gnlTester/files/multiple_line_no_nl", O_RDONLY);
 	char *line;
 
 	if (fd < 0)
 		return (-1);
 	line = get_next_line(fd);
-	while (line)
-	{
 	printf("%s", line);
 	free(line);
 	line = get_next_line(fd);
-	}	
 	printf("%s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
 	close(fd);
 	return (0);
 }
