@@ -6,22 +6,22 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/29 20:25:04 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/29 21:29:51 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char *ft_cleantamp(char *tamp, int i)
+char	*ft_cleantamp(char *tamp, int i)
 {
-	size_t j;
-	size_t a;
+	size_t	j;
+	size_t	a;
 
 	a = ft_strlen(tamp);
 	j = 0;
-	while (tamp[j] && j < (a-i))
+	while (tamp[j] && j < (a - i))
 	{
-		tamp[j] = tamp[j+i];
+		tamp[j] = tamp[j + i];
 		j++;
 	}
 	while (tamp[j])
@@ -29,12 +29,13 @@ char *ft_cleantamp(char *tamp, int i)
 		tamp[j] = '\0';
 		j++;
 	}
-	return(tamp);
+	return (tamp);
 }
 
-void firstfill(char *tamp, char *res)
+void	firstfill(char *tamp, char *res)
 {
-	size_t i;
+	size_t	i;
+
 	i = 0;
 	while (tamp[i] != '\n' && tamp[i])
 	{
@@ -59,7 +60,7 @@ char	*ft_readline(int fd, char *res, char *tamp)
 	while (!ft_check(res, '\0') && !ft_check(res, '\n'))
 	{
 		buff = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-			i = read(fd, buff, BUFFER_SIZE);
+		i = read(fd, buff, BUFFER_SIZE);
 		if (i <= 0)
 		{
 			free(buff);
@@ -72,7 +73,6 @@ char	*ft_readline(int fd, char *res, char *tamp)
 		free(buff);
 		buff = NULL;
 	}
-
 	return (res);
 }
 
@@ -83,7 +83,7 @@ int	ft_result_sort(char *res, char *tamp)
 	if (ft_check(res, '\0') || !ft_strlen(tamp))
 	{
 		if (tamp)
-		return(1);
+			return (1);
 	}
 	return (0);
 }
@@ -108,7 +108,7 @@ char	*get_next_line(int fd)
 		free(tamp[fd]);
 		tamp[fd] = NULL;
 		if (i == 1)
-			break;
+			break ;
 		free(res);
 		res = NULL;
 		return (NULL);

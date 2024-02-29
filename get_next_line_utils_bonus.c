@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:40 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/29 20:23:12 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/29 22:33:21 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ void	*ft_calloc(size_t count, size_t size)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*dst;
-	size_t		i;
-	size_t s1_len;
-	size_t s2_len;
+	size_t	i;
+	size_t	s1_len;
+	size_t	s2_len;
 
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
@@ -84,10 +84,10 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	while (s2[i] && s2[i] != '\n')
 	{
-		dst[i+s1_len] = s2[i];
+		dst[i + s1_len] = s2[i];
 		i++;
 	}
-	dst[i+s1_len] = s2[i];
+	dst[i + s1_len] = s2[i];
 	free(s1);
 	return (dst);
 }
