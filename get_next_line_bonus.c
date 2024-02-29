@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/29 20:24:21 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:25:04 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char *ft_cleantamp(char *tamp, int i)
 {
@@ -29,7 +29,6 @@ char *ft_cleantamp(char *tamp, int i)
 		tamp[j] = '\0';
 		j++;
 	}
-	// tamp[j] = '\0';
 	return(tamp);
 }
 
@@ -92,22 +91,22 @@ int	ft_result_sort(char *res, char *tamp)
 char	*get_next_line(int fd)
 {
 	char		*res;
-	static char	*tamp;
+	static char	*tamp[1024];
 	int			i;
 
 	i = 0;
 	if (fd < 0)
 		return (NULL);
-	if (!tamp)
-		tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	if (!tamp[fd])
+		tamp[fd] = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-	firstfill(tamp, res);
-	res = ft_readline(fd, res, tamp);
-	i = ft_result_sort(res, tamp);
+	firstfill(tamp[fd], res);
+	res = ft_readline(fd, res, tamp[fd]);
+	i = ft_result_sort(res, tamp[fd]);
 	while (i == -1 || i == 1)
 	{
-		free(tamp);
-		tamp = NULL;
+		free(tamp[fd]);
+		tamp[fd] = NULL;
 		if (i == 1)
 			break;
 		free(res);

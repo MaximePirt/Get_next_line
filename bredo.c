@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/28 23:59:35 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:18:45 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	*ft_calloc(size_t count, size_t size)
 	if (count <= 0 || size <= 0)
 		return (malloc(0));
 	if (65535 / count < size)
+	{
+		printf("COUCOU");
 		return (NULL);
+	}
 	mallocsize = count * size;
 	tmp = malloc(mallocsize);
 	if (!tmp)
@@ -124,29 +127,6 @@ char	*lastfill(char *buff, char *tamp)
 	tamp[a] = '\0';
 	return (tamp);
 }
-// char *ft_cleantamp(char *tamp, size_t i)
-// {
-// 	size_t a;
-// 	size_t j;
-
-// 	a = ft_strlen(tamp)+2;
-// 	j = 0;
-// 	while (tamp[j] && j < i-2)
-// 	{
-// 		if (tamp[j+(a-i)])
-// 			tamp[j] = tamp[j+(a-i)];
-// 		else if (tamp[i+1])
-// 			tamp[j] = tamp[j+1];
-// 		j++;
-// 	}
-// 	while (tamp[j])
-// 	{
-// 		tamp[j] = '\0';
-// 		j++;
-// 	}
-// 	// printf("Voicitamp\n%s\n", tamp);
-// 	return(tamp);
-// }
 
 char *ft_cleantamp(char *tamp, int i)
 {
@@ -165,6 +145,7 @@ char *ft_cleantamp(char *tamp, int i)
 		tamp[j] = '\0';
 		j++;
 	}
+	// tamp[j] = '\0';
 	return(tamp);
 }
 
@@ -177,8 +158,11 @@ void firstfill(char *tamp, char *res)
 		res[i] = tamp[i];
 		i++;
 	}
-	res[i] = tamp[i];
-	// i++;
+	if (tamp[i] == '\n')
+	{
+		res[i] = tamp[i];
+		i++;
+	}
 	tamp = ft_cleantamp(tamp, i);
 	return ;
 }
@@ -251,7 +235,7 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	int fd = open("gnlTester/files/multiple_line_no_nl", O_RDONLY);
+	int fd = open("gnlTester/files/alternate_line_nl_no_nl", O_RDONLY);
 	char *line;
 
 	if (fd < 0)
