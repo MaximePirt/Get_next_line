@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:46 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/03/03 23:29:36 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:37:10 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define GET_NEXT_LINE_H
 
 // Buffer size
-# define BUFFER_SIZE 1
+# ifndef GET_NEXT_LINE_H
+#  define BUFFER_SIZE 1
+# endif
 
 // External Libs
 # include <stdlib.h>
