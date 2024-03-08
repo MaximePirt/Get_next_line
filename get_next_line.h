@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:46 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/03/04 17:37:10 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:25:05 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define GET_NEXT_LINE_H
 
 // Buffer size
-# ifndef GET_NEXT_LINE_H
-#  define BUFFER_SIZE 1
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
 # endif
 
 // External Libs
@@ -24,7 +24,7 @@
 
 // main file
 char	*ft_readline(int fd, char *res, char *tamp);
-int		ft_result_sort(char *res, char *tamp);
+int		ft_result_sort(char **res, char **tamp);
 char	*get_next_line(int fd);
 
 // GNL utils

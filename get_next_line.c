@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:42:52 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/03/04 17:36:40 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:25:17 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	*ft_readline(int fd, char *res, char *tamp)
 	while (!ft_check(res, '\0') && !ft_check(res, '\n'))
 	{
 		buff = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+		if (!buff)
+			return (NULL);
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i <= 0)
 		{
@@ -76,14 +78,27 @@ char	*ft_readline(int fd, char *res, char *tamp)
 	return (res);
 }
 
-int	ft_result_sort(char *res, char *tamp)
+int	ft_result_sort(char **res, char **tamp)
 {
-	if (!ft_strlen(res))
-		return (-1);
-	if (ft_check(res, '\0') || !ft_strlen(tamp))
+	int	i;
+
+	i = 0;
+	if (!ft_strlen(*res))
+		i = -1;
+	else if (ft_check(*res, '\0') || !ft_strlen(*tamp))
 	{
-		if (tamp)
-			return (1);
+		if (*tamp)
+			i = 1;
+	}
+	if (i == -1 || i == 1)
+	{
+		free(*tamp);
+		*tamp = NULL;
+		if (i == 1)
+			return (0);
+		free(*res);
+		*res = NULL;
+		return (1);
 	}
 	return (0);
 }
@@ -95,23 +110,19 @@ char	*get_next_line(int fd)
 	int			i;
 
 	i = 0;
-	if (fd < 0 || fd > 1024 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (!tamp)
 		tamp = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	if (!tamp)
+		return (NULL);
 	res = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	if (!res)
+		return (NULL);
 	firstfill(tamp, res);
 	res = ft_readline(fd, res, tamp);
-	i = ft_result_sort(res, tamp);
-	while (i == -1 || i == 1)
-	{
-		free(tamp);
-		tamp = NULL;
-		if (i == 1)
-			break ;
-		free(res);
-		res = NULL;
+	i = ft_result_sort(&res, &tamp);
+	if (i == 1)
 		return (NULL);
-	}
 	return (res);
 }

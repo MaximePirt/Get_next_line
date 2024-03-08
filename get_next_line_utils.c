@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:50:40 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/02/29 22:33:44 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:25:13 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	*ft_calloc(size_t count, size_t size)
 
 	if (count <= 0 || size <= 0)
 		return (malloc(0));
-	if (2147483647 / count < size)
-		return (NULL);
+	// if (2147483647 / count < size)
+	// 	return (NULL);
 	mallocsize = count * size;
 	tmp = malloc(mallocsize);
 	if (!tmp)
@@ -72,7 +72,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	dst = (char *)calloc((s1_len + s2_len + 1), 1);
+	dst = (char *)ft_calloc((s1_len + s2_len + 1), 1);
 	if (!dst)
 		return (NULL);
 	i = 0;
