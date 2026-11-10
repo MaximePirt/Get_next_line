@@ -1,0 +1,19 @@
+summary:
+  fr: 42 • C / Unix
+  en: 42 • C / Unix
+description:
+  fr: >
+    Implémentation de get_next_line, une fonction qui lit un fichier
+    descripteur ligne par ligne sans utiliser fgets. Un buffer statique
+    conserve, entre les appels, ce qui a déjà été lu mais pas encore
+    renvoyé, pour gérer des fichiers de taille inconnue lus par blocs de
+    taille fixe (BUFFER_SIZE). La partie bonus étend la fonction pour lire
+    plusieurs file descriptors en parallèle avec une seule variable statique.
+  en: >
+    Implementation of get_next_line, a function that reads a file
+    descriptor one line at a time without using fgets. A static buffer
+    keeps track, between calls, of what has already been read but not yet
+    returned, to handle files of unknown size read in fixed-size chunks
+    (BUFFER_SIZE). The bonus part extends it to read from multiple file
+    descriptors in parallel using a single static variable.
+stack: [C]
